@@ -108,3 +108,13 @@ class BlipOutputFeatures(ModelOutput):
     text_embeds_proj: Optional[torch.FloatTensor] = None
 
     multimodal_embeds: Optional[torch.FloatTensor] = None
+
+from diffusers.models.vae import DiagonalGaussianDistribution
+@dataclass
+class VAEOutput(ModelOutput):
+    predicted_embedding: DiagonalGaussianDistribution
+    vae_embedding: Optional[DiagonalGaussianDistribution] = None
+
+    loss: Optional[torch.FloatTensor] = None
+
+    multimodal_embeds: Optional[torch.FloatTensor] = None

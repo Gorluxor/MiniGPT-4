@@ -1,0 +1,26 @@
+model:
+  arch: vqtest
+  model_type: pretrain_vicuna
+  freeze_vit: True
+  freeze_qformer: True
+  max_txt_len: 160
+  #end_sym: "###"
+  low_resource: True
+  #prompt_path: "/datawaha/cggroup/cvejica/SAM/MiniGPT-4/prompts/alignment.txt"
+  #prompt_template: '###Human: {} ###Assistant: '
+  #ckpt: '/datawaha/cggroup/cvejica/SAM/MiniGPT-4/minigpt4/output/minigpt5_stage1_pretrain1/20230427173/checkpoint_1.pth'
+  ckpt: '/datawaha/cggroup/cvejica/SAM/MiniGPT-4/minigpt4/output/minigpt5_stage1_pretrain1/20230430134/checkpoint_1.pth'
+  loss_type: 'mse_tensor'
+  
+datasets:
+  cc_sbu_align:
+    vis_processor:
+      train:
+        name: "blip2_image_eval"
+        image_size: 224
+    text_processor:
+      train:
+        name: "blip_caption"
+
+run:
+  task: image_text_pretrain

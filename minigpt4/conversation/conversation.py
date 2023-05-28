@@ -192,6 +192,8 @@ class Chat:
     def get_context_emb(self, conv, img_list):
         prompt = conv.get_prompt()
         prompt_segs = prompt.split('<ImageHere>')
+        if len(prompt_segs) == 1:
+            return self.get_context_emb_conv_only(conv) # no image in prompt instructions
         assert len(prompt_segs) == len(img_list) + 1, "Unmatched numbers of image placeholders and images."
         seg_tokens = [
             self.model.llama_tokenizer(
@@ -204,4 +206,16 @@ class Chat:
         mixed_embs = torch.cat(mixed_embs, dim=1)
         return mixed_embs
 
+    def get_context_emb_conv_only(self, conv):
+        prompt = conv.get_prompt()
+        prompt_segs = [prompt]
+        seg_tokens = [
+            self.model.llama_tokenizer(
+                seg, return_tensors="pt", add_special_tokens=i == 0).to(self.device).input_ids
+            # only add bos to the first seg
+            for i, seg in enumerate(prompt_segs)
+        ]
+        seg_embs = [self.model.llama_model.model.embed_tokens(seg_t) for seg_t in seg_tokens]
+        mixed_embs = torch.cat(seg_embs, dim=1)
+        return mixed_embs
 
