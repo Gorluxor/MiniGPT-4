@@ -6,7 +6,7 @@ model:
   max_txt_len: 160
   end_sym: "###"
   low_resource: True
-  prompt_path: "/datawaha/cggroup/cvejica/SAM/MiniGPT-4/prompts/alignment.txt"
+  prompt_path: "3rdparty/MiniGPT-4/prompts/alignment.txt"
   prompt_template: '###Human: {} ###Assistant: '
   ckpt: '/datawaha/cggroup/cvejica/SAM/models/pretrained_minigpt4.pth'
 
